@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { Link, useLocation } from "wouter";
-import { Truck, Users, LogOut } from "lucide-react";
+import { Truck, Users, Crosshair, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCurrentUser, useLogout } from "@/hooks/useAuth";
@@ -11,7 +11,10 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const NAV: NavItem[] = [{ to: "/carriers", label: "Carriers", icon: Users }];
+const NAV: NavItem[] = [
+  { to: "/carriers", label: "Carriers", icon: Users },
+  { to: "/load-hunter", label: "Load Hunter", icon: Crosshair },
+];
 
 export function Shell({ children }: { children: ReactNode }) {
   const [location] = useLocation();

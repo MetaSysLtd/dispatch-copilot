@@ -11,6 +11,7 @@ import { configurePassport } from "./auth/passport.js";
 import { requireAuth } from "./middleware/auth.js";
 import { authRouter } from "./routes/auth.js";
 import { carriersRouter } from "./routes/carriers.js";
+import { loadHunterRouter } from "./routes/load-hunter.js";
 import { attachWebSocket } from "./ws.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -63,6 +64,7 @@ app.use("/api/auth", authRouter);
 // Everything else under /api requires a logged-in session
 app.use("/api", requireAuth);
 app.use("/api/carriers", carriersRouter);
+app.use("/api/load-hunter", loadHunterRouter);
 
 // Static client (production build only — Vite handles dev)
 if (process.env.NODE_ENV === "production") {

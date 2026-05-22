@@ -4,6 +4,7 @@ import { useCurrentUser } from "@/hooks/useAuth";
 import LoginPage from "@/pages/login";
 import CarriersListPage from "@/pages/carriers/index";
 import CarrierDetailPage from "@/pages/carriers/[id]";
+import LoadHunterPage from "@/pages/load-hunter/index";
 
 function ProtectedRoutes() {
   const [location, setLocation] = useLocation();
@@ -29,6 +30,7 @@ function ProtectedRoutes() {
         <Route path="/carriers/:id">
           {(params) => <CarrierDetailPage id={params.id} />}
         </Route>
+        <Route path="/load-hunter" component={LoadHunterPage} />
         <Route>
           <Redirect to="/carriers" />
         </Route>
