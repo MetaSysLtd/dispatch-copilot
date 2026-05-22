@@ -21,6 +21,14 @@ if (!SESSION_SECRET) {
 }
 
 const app = express();
+
+// Railway (and most PaaS) terminate TLS at an edge proxy and forward plain
+// HTTP with X-Forwarded-Proto: https. Trusting the first proxy hop lets
+// Express see req.secure === true so express-session will actually emit the
+// `secure` session cookie. Without this, the Set-Cookie header is dropped and
+// sessions never persist in production. MUST be set before the session mw.
+app.set("trust proxy", 1);
+
 const PgSession = connectPgSimple(session);
 
 app.use(express.json({ limit: "1mb" }));
@@ -40,7 +48,7 @@ app.use(
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24 * 14, // 14 days
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
   }),
 );

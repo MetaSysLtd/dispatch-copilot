@@ -29,7 +29,14 @@ authRouter.post("/login", (req: Request, res: Response, next: NextFunction) => {
       }
       req.logIn(user, (loginErr) => {
         if (loginErr) return next(loginErr);
-        res.json({ user });
+        // Force the session to be written to Postgres before responding.
+        // connect-pg-simple writes asynchronously; without this the client's
+        // first post-login request can arrive before the row is committed and
+        // get a spurious 401.
+        req.session.save((saveErr) => {
+          if (saveErr) return next(saveErr);
+          res.json({ user });
+        });
       });
     },
   )(req, res, next);
